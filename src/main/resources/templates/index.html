@@ -1,0 +1,114 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Quản Lý Sinh Viên</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary mb-4 shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="/">Hệ Thống Quản Lý Sinh Viên</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <h4 class="mb-0 text-primary">Danh Sách Sinh Viên</h4>
+            </div>
+
+            <div class="col-md-5">
+              <form th:action="@{/search}" method="get">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    name="keyword"
+                    class="form-control"
+                    placeholder="Nhập tên để tìm..."
+                    th:value="${keyword}"
+                  />
+                  <button
+                    class="btn btn-primary"
+                    type="submit"
+                    title="Tìm kiếm"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+
+                  <a
+                    href="/"
+                    class="btn btn-outline-secondary"
+                    title="Xóa lọc / Hiện tất cả"
+                  >
+                    <i class="fas fa-undo"></i>
+                  </a>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-md-3 text-end">
+              <a href="/new" class="btn btn-success">
+                <i class="fas fa-plus"></i> Thêm Mới
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-striped table-hover mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Họ Tên</th>
+                <th>Email</th>
+                <th>Tuổi</th>
+                <th class="text-center">Hành Động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="student : ${listStudents}">
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}" class="fw-bold"></td>
+                <td th:text="${student.email}"></td>
+                <td th:text="${student.age}"></td>
+                <td class="text-center">
+                  <a
+                    th:href="@{/edit/{id}(id=${student.id})}"
+                    class="btn btn-sm btn-warning me-2"
+                    title="Sửa"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <a
+                    th:href="@{/delete/{id}(id=${student.id})}"
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('Bạn có chắc muốn xóa không?');"
+                    title="Xóa"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div
+            th:if="${#lists.isEmpty(listStudents)}"
+            class="text-center py-5 text-muted"
+          >
+            <p>Không tìm thấy sinh viên nào!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
